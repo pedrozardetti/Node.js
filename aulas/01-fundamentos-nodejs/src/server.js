@@ -2,31 +2,39 @@
 // ESModules ==> Padrão de importação utilizando o import/export
 
 import http from 'node:http'
+import { Database } from './database.js'
 
-const user = []
+const database = new Database()
 
-const server = http.createServer((req, res) => {
+
+const server = http.createServer(async (req, res) => {
     const { method, url } = req
 
+    await json(req, res)
+    
     // Rotas HTTP são portas de entradas para executar diferente ações na aplicação
-    if(method == 'GET' && url == '/users') {
+    if (method == 'GET' && url == '/users') {
+        const users = database.select('users')
 
-        return res
-        .setHeader('Content-type', 'application/json')
-        .end(JSON.stringify(user))
+        return res.end(JSON.stringify(users))
     }
 
     if (method == 'POST' && url == '/users') {
-        user.push({
+        const { name, telefone } = req.body
+
+        const user = {
             id: 1,
-            name: 'Pedro Safado',
-            telefone: '(11) 95021-6699',
-        })
+            name, 
+            telefone, 
+        }
 
+        database.insert('users', user)
 
+        // HTTP status code que simboliza uma resposta de sucesso
         return res.writeHead(201).end()
     }
 
+    // HTTP status code que simboliza que a rota não existe
     return res.writeHead(404).end('Not found')
 
 })
