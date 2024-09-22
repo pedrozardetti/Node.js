@@ -1,7 +1,8 @@
-import { Database } from './database.js'
-import { randomUUID } from 'node:crypto'
+import path from "node:path";
+import { Database } from "./database.js";
+import { randomUUID } from "node:crypto";
 
-const database = new Database()
+const database = new Database();
 
 export const routes = [
   {
@@ -11,6 +12,13 @@ export const routes = [
       const users = database.select("users");
 
       return res.end(JSON.stringify(users));
+    },
+  },
+  {
+    method: "DELETE",
+    path: "/users",
+    handler: (req, res) => {
+      return res.end();
     },
   },
   {
