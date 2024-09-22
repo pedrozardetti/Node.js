@@ -3,6 +3,7 @@
 
 import http from 'node:http'
 import { Database } from './database.js'
+import { json } from './middlewares/json.js'
 
 const database = new Database()
 
@@ -17,15 +18,16 @@ const server = http.createServer(async (req, res) => {
         const users = database.select('users')
 
         return res.end(JSON.stringify(users))
+        .setHeader('Content-type', 'application/json')
     }
 
     if (method == 'POST' && url == '/users') {
-        const { name, telefone } = req.body
+        const { name, email } = req.body
 
         const user = {
             id: 1,
             name, 
-            telefone, 
+            email, 
         }
 
         database.insert('users', user)
