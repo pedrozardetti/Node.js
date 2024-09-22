@@ -16,13 +16,6 @@ export const routes = [
     },
   },
   {
-    method: "DELETE",
-    path: buildRoutePath("/users/:id"),
-    handler: (req, res) => {
-      return res.end();
-    },
-  },
-  {
     method: "POST",
     path: buildRoutePath("/users"),
     handler: (req, res) => {
@@ -37,6 +30,13 @@ export const routes = [
       database.insert("users", user);
 
       return res.writeHead(201).end();
-    },
+    }
   },
+  {
+    method: "DELETE",
+    path: buildRoutePath("/users/:id/"),
+    handler: (req, res) => {
+      return res.end();
+    },
+  }
 ];
